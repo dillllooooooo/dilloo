@@ -22,6 +22,10 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: var(--bg-dark);
       background-image: 
@@ -33,6 +37,19 @@
       justify-content: center;
       padding: 30px 15px;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Canvas Kembang Api (Overlay) */
+    #fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
     }
 
     .container {
@@ -41,6 +58,42 @@
       display: flex;
       flex-direction: column;
       gap: 25px;
+    }
+
+    /* Navigation Bar Tombol */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      background: rgba(15, 12, 27, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 10px;
+      border-radius: 30px;
+      border: 1px solid var(--card-border);
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      color: var(--text-main);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+      color: #fff;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.5);
+      transform: translateY(-2px);
     }
 
     .card {
@@ -52,6 +105,7 @@
       padding: 25px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       animation: fadeIn 0.8s ease-in-out;
+      scroll-margin-top: 80px;
     }
 
     @keyframes fadeIn {
@@ -59,7 +113,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Profil Section */
+    /* Profil Section & Animasi Cincin Aura/Glow */
     .profile-header {
       text-align: center;
     }
@@ -68,11 +122,20 @@
       position: relative;
       width: 150px;
       height: 150px;
-      margin: 0 auto 15px;
+      margin: 0 auto 20px;
       border-radius: 50%;
       padding: 4px;
       background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
-      box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+      animation: pulseAura 3s infinite alternate;
+    }
+
+    @keyframes pulseAura {
+      0% {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.6), 0 0 30px rgba(168, 85, 247, 0.4);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.9), 0 0 50px rgba(168, 85, 247, 0.8);
+      }
     }
 
     .avatar-wrapper img {
@@ -112,6 +175,42 @@
     .bio-label {
       color: var(--text-muted);
       font-weight: 600;
+    }
+
+    /* Tombol Media Sosial */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .social-btn.tiktok {
+      background: linear-gradient(135deg, #25F4EE, #FE2C55);
+      box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
+    }
+
+    .social-btn.instagram {
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      box-shadow: 0 4px 12px rgba(253, 29, 29, 0.3);
     }
 
     /* Section Header */
@@ -251,9 +350,17 @@
       margin-top: 3px;
     }
 
-    /* Penutup */
+    /* Penutup & Kembang Api Interaktif */
     .footer {
       text-align: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .footer:active {
+      transform: scale(0.98);
     }
 
     .footer h2 {
@@ -270,14 +377,36 @@
       line-height: 1.8;
       font-size: 0.95rem;
     }
+
+    .click-hint {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--primary-pink);
+      background: rgba(236, 72, 153, 0.1);
+      padding: 4px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(236, 72, 153, 0.3);
+    }
   </style>
 </head>
 <body>
 
+  <!-- Canvas Animasi Kembang Api -->
+  <canvas id="fireworksCanvas"></canvas>
+
   <div class="container">
+
+    <!-- NAVIGASI TOMBOL KELOMPOK -->
+    <nav class="nav-buttons">
+      <a href="#profil" class="nav-btn">Profil</a>
+      <a href="#film" class="nav-btn">Film</a>
+      <a href="#bukutamu" class="nav-btn">Buku Tamu</a>
+      <a href="#penutup" class="nav-btn">Penutup</a>
+    </nav>
     
     <!-- SECTION PROFIL -->
-    <div class="card profile-header">
+    <div id="profil" class="card profile-header">
       <div class="avatar-wrapper">
         <img src="08.jpeg" alt="Foto saya" width="150">
       </div>
@@ -289,10 +418,20 @@
         <div class="bio-item"><span class="bio-label">Hobby :</span> Memasak dan Menonton</div>
         <div class="bio-item"><span class="bio-label">Cita-Cita :</span> BOS MUDA</div>
       </div>
+
+      <!-- TAUTAN SOSIAL MEDIA -->
+      <div class="social-links">
+        <a href="https://tiktok.com/@diillooooooooo" target="_blank" rel="noopener noreferrer" class="social-btn tiktok">
+          <span>🎵</span> TikTok
+        </a>
+        <a href="https://www.instagram.com/nrllfdhilah__?mdxt=MTh2NnV4ZG1icnA1ZA==" target="_blank" rel="noopener noreferrer" class="social-btn instagram">
+          <span>📸</span> Instagram
+        </a>
+      </div>
     </div>
 
     <!-- SECTION FILM FAVORIT -->
-    <div class="card">
+    <div id="film" class="card">
       <h2 class="section-title">Film Favorit</h2>
       <div class="film-card">
         <h3>Naruto</h3>
@@ -302,7 +441,7 @@
     </div>
 
     <!-- SECTION BUKU TAMU -->
-    <div class="card">
+    <div id="bukutamu" class="card">
       <h2 class="section-title">Buku Tamu</h2>
       <form id="guestbookForm">
         <div class="form-group">
@@ -322,18 +461,20 @@
     </div>
 
     <!-- SECTION PENUTUP -->
-    <div class="card footer">
+    <div id="penutup" class="card footer">
       <h2>SEKIAN DARI SAYA</h2>
       <p>
         BUKAN DJ TAPI BREAKBEAT<br>
         BUKAN YANG TERBAIK, TAPI SIAP JADI LEBIH BAIK!<br>
         THANKS FOR VISITING ✌🏻
       </p>
+      <div class="click-hint">✨ Klik di sini untuk kembang api ✨</div>
     </div>
 
   </div>
 
   <script>
+    // --- BUKU TAMU SCRIPT ---
     const form = document.getElementById('guestbookForm');
     const list = document.getElementById('guestbookList');
 
@@ -348,7 +489,6 @@
         return;
       }
 
-      // Buat elemen item pesan baru
       const item = document.createElement('div');
       item.className = 'guestbook-item';
       item.innerHTML = `
@@ -357,18 +497,95 @@
       `;
 
       list.prepend(item);
-
-      // Reset form
       form.reset();
       alert('Terima kasih sudah mengisi buku tamu!');
     });
 
-    // Fungsi mencegah XSS/karakter khusus
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.innerText = text;
       return div.innerHTML;
     }
+
+    // --- ANIMASI KEMBANG API SCRIPT ---
+    const canvas = document.getElementById('fireworksCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 3 + 1;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6 + 2;
+        this.velocity = {
+          x: Math.cos(angle) * speed,
+          y: Math.sin(angle) * speed
+        };
+        this.alpha = 1;
+        this.decay = Math.random() * 0.015 + 0.015;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      update() {
+        this.velocity.y += 0.05;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.alpha -= this.decay;
+      }
+    }
+
+    function createFirework(x, y) {
+      const colors = ['#ec4899', '#a855f7', '#f472b6', '#c084fc', '#ffffff', '#fbbf24'];
+      const particleCount = 60;
+      for (let i = 0; i < particleCount; i++) {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.alpha > 0);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateFireworks);
+    }
+    animateFireworks();
+
+    // Pemicu Kembang Api saat Penutup diklik
+    const footerCard = document.getElementById('penutup');
+    footerCard.addEventListener('click', function(e) {
+      const rect = footerCard.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      createFirework(centerX, centerY);
+      createFirework(centerX - 100, centerY - 30);
+      createFirework(centerX + 100, centerY - 30);
+    });
   </script>
 </body>
 </html>
