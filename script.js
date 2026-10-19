@@ -1,37 +1,68 @@
 const form = document.getElementById('guestbookForm');
 const list = document.getElementById('guestbookList');
 
-// BUKU TAMU DIGITAL
-form.addEventListener('submit', function (e) {
+// URL GOOGLE APPS SCRIPT
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkXBHp-5weZ5_BiUWGsddGO1n9rF-P9bZiHuGmxxToy7GxOqf_3e82R0FIX8jPwk8E/exec';
+
+// BUKU TAMU DIGITAL TERHUBUNG KE GOOGLE SHEETS
+form.addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const nama = document.getElementById('nama').value.trim();
   const pesan = document.getElementById('pesan').value.trim();
+  const tombol = form.querySelector('button[type="submit"]');
 
   if (!nama || !pesan) {
     alert('Isi nama dan pesan terlebih dahulu ya.');
     return;
   }
 
-  const item = document.createElement('div');
-  item.className = 'guestbook-item';
+  tombol.disabled = true;
+  tombol.textContent = 'Mengirim...';
 
-  const nameElement = document.createElement('div');
-  nameElement.className = 'name';
-  nameElement.textContent = nama;
+  try {
+    const data = new URLSearchParams();
+    data.append('nama', nama);
+    data.append('pesan', pesan);
 
-  const messageElement = document.createElement('div');
-  messageElement.className = 'message';
-  messageElement.textContent = pesan;
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    });
 
-  item.appendChild(nameElement);
-  item.appendChild(messageElement);
+    // Tampilkan pesan di halaman
+    const item = document.createElement('div');
+    item.className = 'guestbook-item';
 
-  list.prepend(item);
-  form.reset();
+    const nameElement = document.createElement('div');
+    nameElement.className = 'name';
+    nameElement.textContent = nama;
 
-  alert('Terima kasih sudah mengisi buku tamu!');
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    messageElement.textContent = pesan;
+
+    item.appendChild(nameElement);
+    item.appendChild(messageElement);
+    list.prepend(item);
+
+    form.reset();
+
+    alert(
+      'Permintaan pengiriman telah dilakukan. ' +
+      'Periksa Google Sheets untuk memastikan data tersimpan.'
+    );
+
+  } catch (error) {
+    console.error('Gagal mengirim buku tamu:', error);
+    alert('Pengiriman gagal. Periksa koneksi internet dan coba lagi.');
+  } finally {
+    tombol.disabled = false;
+    tombol.textContent = 'Kirim Pesan ↗';
+  }
 });
+
 
 // ANIMASI KEMBANG API
 const canvas = document.getElementById('fireworksCanvas');
@@ -119,6 +150,7 @@ function animateFireworks() {
 }
 
 animateFireworks();
+
 
 // KEMBANG API SAAT PENUTUP DIKLIK
 const footerCard = document.getElementById('penutup');
