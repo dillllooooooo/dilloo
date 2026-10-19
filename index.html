@@ -1,591 +1,180 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruang Diri - Nurul Fadhilah</title>
-  <style>
-    :root {
-      --bg-dark: #0f0c1b;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(236, 72, 153, 0.2);
-      --primary-pink: #ec4899;
-      --primary-purple: #a855f7;
-      --text-main: #f3e8ff;
-      --text-muted: #c084fc;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buku Digital</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 10% 10%, rgba(236, 72, 153, 0.2) 0px, transparent 50%),
-        radial-gradient(at 90% 90%, rgba(168, 85, 247, 0.2) 0px, transparent 50%);
-      background-attachment: fixed;
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      padding: 30px 15px;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Canvas Kembang Api (Overlay) */
-    #fireworksCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 680px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
-
-    /* Navigation Bar Tombol */
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 15px;
-      z-index: 100;
-      background: rgba(15, 12, 27, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 10px;
-      border-radius: 30px;
-      border: 1px solid var(--card-border);
-    }
-
-    .nav-btn {
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(236, 72, 153, 0.3);
-      color: var(--text-main);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
-      color: #fff;
-      box-shadow: 0 0 12px rgba(236, 72, 153, 0.5);
-      transform: translateY(-2px);
-    }
-
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      animation: fadeIn 0.8s ease-in-out;
-      scroll-margin-top: 80px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Profil Section & Animasi Cincin Aura/Glow */
-    .profile-header {
-      text-align: center;
-    }
-
-    .avatar-wrapper {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      padding: 4px;
-      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
-      animation: pulseAura 3s infinite alternate;
-    }
-
-    @keyframes pulseAura {
-      0% {
-        box-shadow: 0 0 15px rgba(236, 72, 153, 0.6), 0 0 30px rgba(168, 85, 247, 0.4);
-      }
-      100% {
-        box-shadow: 0 0 30px rgba(236, 72, 153, 0.9), 0 0 50px rgba(168, 85, 247, 0.8);
-      }
-    }
-
-    .avatar-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-    }
-
-    .profile-title h1 {
-      font-size: 1.8rem;
-      background: linear-gradient(to right, var(--primary-pink), var(--primary-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 5px;
-    }
-
-    .bio-list {
-      margin-top: 15px;
-      text-align: left;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 15px 20px;
-      border-radius: 12px;
-      border-left: 3px solid var(--primary-pink);
-    }
-
-    .bio-item {
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-
-    .bio-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .bio-label {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* Tombol Media Sosial */
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-decoration: none;
-      color: #fff;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .social-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .social-btn.tiktok {
-      background: linear-gradient(135deg, #25F4EE, #FE2C55);
-      box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
-    }
-
-    .social-btn.instagram {
-      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-      box-shadow: 0 4px 12px rgba(253, 29, 29, 0.3);
-    }
-
-    /* Section Header */
-    .section-title {
-      font-size: 1.3rem;
-      margin-bottom: 15px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 18px;
-      background: var(--primary-pink);
-      border-radius: 4px;
-    }
-
-    /* Film Card */
-    .film-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(236, 72, 153, 0.15);
-      border-radius: 15px;
-      padding: 18px;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .film-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--primary-pink);
-    }
-
-    .film-card h3 {
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .film-card p {
-      color: #d1d5db;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    .btn-link {
-      display: inline-block;
-      padding: 8px 16px;
-      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
-      color: #fff;
-      text-decoration: none;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: opacity 0.3s ease;
-    }
-
-    .btn-link:hover {
-      opacity: 0.9;
-    }
-
-    /* Form Buku Tamu */
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(236, 72, 153, 0.3);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--primary-pink);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
-    }
-
-    .guestbook-list {
-      margin-top: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .guestbook-item {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px 15px;
-      border-radius: 10px;
-      border-left: 2px solid var(--primary-purple);
-    }
-
-    .guestbook-item .name {
-      font-weight: bold;
-      color: var(--primary-pink);
-      font-size: 0.85rem;
-    }
-
-    .guestbook-item .message {
-      font-size: 0.9rem;
-      color: #e5e7eb;
-      margin-top: 3px;
-    }
-
-    /* Penutup & Kembang Api Interaktif */
-    .footer {
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-      transition: transform 0.2s ease;
-    }
-
-    .footer:active {
-      transform: scale(0.98);
-    }
-
-    .footer h2 {
-      background: linear-gradient(to right, var(--primary-pink), var(--primary-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-
-    .footer p {
-      color: #d1d5db;
-      font-weight: 800;
-      line-height: 1.8;
-      font-size: 0.95rem;
-    }
-
-    .click-hint {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 0.75rem;
-      color: var(--primary-pink);
-      background: rgba(236, 72, 153, 0.1);
-      padding: 4px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(236, 72, 153, 0.3);
-    }
-  </style>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #fce4ec;
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px #d9a8bb;
+}
+h1 {
+  text-align: center;
+  color: #d63384;
+}
+p {
+  color: #666;
+}
+.intro {
+  text-align: center;
+}
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 7px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #e83e8c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+}
+.pesanan {
+  background: #fff0f6;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+</style>
 </head>
+
 <body>
+<div class="container">
+  <h1>📚 Buku Digital</h1>
+  <p class="intro">Silakan isi nama dan tanggal pemesanan.</p>
 
-  <!-- Canvas Animasi Kembang Api -->
-  <canvas id="fireworksCanvas"></canvas>
+  <form id="formPesanan">
+    <label for="nama">Nama Pemesan</label>
+    <input type="text" id="nama"
+      placeholder="Masukkan nama lengkap" required>
 
-  <div class="container">
+    <label for="tanggal">Tanggal Pesan</label>
+    <input type="date" id="tanggal" required>
 
-    <!-- NAVIGASI TOMBOL KELOMPOK -->
-    <nav class="nav-buttons">
-      <a href="#profil" class="nav-btn">Profil</a>
-      <a href="#film" class="nav-btn">Film</a>
-      <a href="#bukutamu" class="nav-btn">Buku Tamu</a>
-      <a href="#penutup" class="nav-btn">Penutup</a>
-    </nav>
-    
-    <!-- SECTION PROFIL -->
-    <div id="profil" class="card profile-header">
-      <div class="avatar-wrapper">
-        <img src="08.jpeg" alt="Foto saya" width="150">
-      </div>
-      <div class="profile-title">
-        <h1>HAIII EVERYONE!!!</h1>
-      </div>
-      <div class="bio-list">
-        <div class="bio-item"><span class="bio-label">Nama :</span> Nurul Fadhilah</div>
-        <div class="bio-item"><span class="bio-label">Hobby :</span> Memasak dan Menonton</div>
-        <div class="bio-item"><span class="bio-label">Cita-Cita :</span> BOS MUDA</div>
-      </div>
+    <button type="submit" id="tombol">
+      Simpan Pesanan
+    </button>
+  </form>
 
-      <!-- TAUTAN SOSIAL MEDIA -->
-      <div class="social-links">
-        <a href="https://tiktok.com/@diillooooooooo" target="_blank" rel="noopener noreferrer" class="social-btn tiktok">
-          <span>🎵</span> TikTok
-        </a>
-        <a href="https://www.instagram.com/nrllfdhilah__?mdxt=MTh2NnV4ZG1icnA1ZA==" target="_blank" rel="noopener noreferrer" class="social-btn instagram">
-          <span>📸</span> Instagram
-        </a>
-      </div>
-    </div>
+  <h3>📖 Daftar Pesanan</h3>
+  <div id="daftar"></div>
+</div>
 
-    <!-- SECTION FILM FAVORIT -->
-    <div id="film" class="card">
-      <h2 class="section-title">Film Favorit</h2>
-      <div class="film-card">
-        <h3>Naruto</h3>
-        <p>Anime tentang persahabatan, perjuangan, dan tekad pantang menyerah untuk meraih impian.</p>
-        <a class="btn-link" href="https://www.crunchyroll.com/series/GY9PJ5KWR/naruto" target="_blank" rel="noopener noreferrer">Tonton Naruto ↗</a>
-      </div>
-    </div>
+<script>
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbykTGplkwHevkWGrXt6XPLfZaogAVzPIlp6lIOVuwH4MRyeglxGBWxir7vhWKOzQa7KeA/exec";
 
-    <!-- SECTION BUKU TAMU -->
-    <div id="bukutamu" class="card">
-      <h2 class="section-title">Buku Tamu</h2>
-      <form id="guestbookForm">
-        <div class="form-group">
-          <label for="nama">Nama kamu</label>
-          <input type="text" id="nama" placeholder="Masukkan nama kamu" required>
-        </div>
-        <div class="form-group">
-          <label for="pesan">Pesan kamu</label>
-          <textarea id="pesan" placeholder="Tulis pesan untuk Nurul..." required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">Kirim Pesan ↗</button>
-      </form>
+const form = document.getElementById("formPesanan");
+const daftar = document.getElementById("daftar");
+const tombol = document.getElementById("tombol");
 
-      <div class="guestbook-list" id="guestbookList">
-        <!-- Pesan yang dikirim akan muncul di sini -->
-      </div>
-    </div>
+let pesanan = JSON.parse(
+  localStorage.getItem("pesananBuku") || "[]"
+);
 
-    <!-- SECTION PENUTUP -->
-    <div id="penutup" class="card footer">
-      <h2>SEKIAN DARI SAYA</h2>
-      <p>
-        BUKAN DJ TAPI BREAKBEAT<br>
-        BUKAN YANG TERBAIK, TAPI SIAP JADI LEBIH BAIK!<br>
-        THANKS FOR VISITING ✌🏻
-      </p>
-      <div class="click-hint">✨ Klik di sini untuk SELEBRASI ✨</div>
-    </div>
+function tampilkanPesanan() {
+  daftar.innerHTML = "";
 
-  </div>
+  if (pesanan.length === 0) {
+    daftar.textContent = "Belum ada pesanan.";
+    return;
+  }
 
-  <script>
-    // --- BUKU TAMU SCRIPT ---
-    const form = document.getElementById('guestbookForm');
-    const list = document.getElementById('guestbookList');
+  pesanan.forEach(function(item) {
+    const kartu = document.createElement("div");
+    kartu.className = "pesanan";
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const nama = document.getElementById('nama').value.trim();
-      const pesan = document.getElementById('pesan').value.trim();
+    const nama = document.createElement("strong");
+    nama.textContent = "Nama: " + item.nama;
 
-      if (!nama || !pesan) {
-        alert('Isi nama dan pesan terlebih dahulu ya.');
-        return;
-      }
+    const tanggal = document.createElement("p");
+    tanggal.textContent = "Tanggal pesan: " + item.tanggal;
 
-      const item = document.createElement('div');
-      item.className = 'guestbook-item';
-      item.innerHTML = `
-        <div class="name">${escapeHtml(nama)}</div>
-        <div class="message">${escapeHtml(pesan)}</div>
-      `;
+    kartu.append(nama, tanggal);
+    daftar.appendChild(kartu);
+  });
+}
 
-      list.prepend(item);
-      form.reset();
-      alert('Terima kasih sudah mengisi buku tamu!');
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const nama = document.getElementById("nama").value.trim();
+  const tanggal = document.getElementById("tanggal").value;
+
+  if (!nama || !tanggal) {
+    alert("Nama dan tanggal wajib diisi.");
+    return;
+  }
+
+  tombol.disabled = true;
+  tombol.textContent = "Mengirim...";
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        nama: nama,
+        tanggal: tanggal
+      })
     });
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.innerText = text;
-      return div.innerHTML;
-    }
+    const dataBaru = { nama, tanggal };
+    pesanan.unshift(dataBaru);
 
-    // --- ANIMASI KEMBANG API SCRIPT ---
-    const canvas = document.getElementById('fireworksCanvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+    localStorage.setItem(
+      "pesananBuku",
+      JSON.stringify(pesanan)
+    );
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    tampilkanPesanan();
+    form.reset();
 
-    class Particle {
-      constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.radius = Math.random() * 3 + 1;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 6 + 2;
-        this.velocity = {
-          x: Math.cos(angle) * speed,
-          y: Math.sin(angle) * speed
-        };
-        this.alpha = 1;
-        this.decay = Math.random() * 0.015 + 0.015;
-      }
+    alert(
+      "Data telah dikirim. Periksa Google Spreadsheet untuk memastikan data masuk."
+    );
 
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
-        ctx.fill();
-        ctx.restore();
-      }
+  } catch (error) {
+    alert("Pengiriman gagal. Periksa koneksi internet.");
+  } finally {
+    tombol.disabled = false;
+    tombol.textContent = "Simpan Pesanan";
+  }
+});
 
-      update() {
-        this.velocity.y += 0.05;
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.alpha -= this.decay;
-      }
-    }
-
-    function createFirework(x, y) {
-      const colors = ['#ec4899', '#a855f7', '#f472b6', '#c084fc', '#ffffff', '#fbbf24'];
-      const particleCount = 60;
-      for (let i = 0; i < particleCount; i++) {
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        particles.push(new Particle(x, y, color));
-      }
-    }
-
-    function animateFireworks() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles = particles.filter(p => p.alpha > 0);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateFireworks);
-    }
-    animateFireworks();
-
-    // Pemicu Kembang Api saat Penutup diklik
-    const footerCard = document.getElementById('penutup');
-    footerCard.addEventListener('click', function(e) {
-      const rect = footerCard.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      createFirework(centerX, centerY);
-      createFirework(centerX - 100, centerY - 30);
-      createFirework(centerX + 100, centerY - 30);
-    });
-  </script>
+tampilkanPesanan();
+</script>
 </body>
 </html>
