@@ -1,71 +1,29 @@
-from pathlib import Path
-p = Path("/mnt/data/index.html")
-html = p.read_text(encoding="utf-8")
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Biodata Saya</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-html = html.replace(
-'''          <div class="film">
-            
-            <h3>Film Favorit</h3>
-            <p class="muted">Tulis judul film favoritmu di sini dan ceritakan kenapa kamu menyukainya.</p>
-          </div>''',
-'''          <div class="film">
-            <h3>Naruto</h3>
-            <p class="muted">Anime tentang persahabatan, perjuangan, dan tekad untuk meraih impian.</p>
-            <a class="back" href="https://www.crunchyroll.com/series/GY9PJ5KWR/naruto" target="_blank" rel="noopener noreferrer">Tonton Naruto ↗</a>
-          </div>'''
-)
+    <h1>BIODATA DIRI</h1>
 
-# Replace second film card content too with a simple related favorite viewing card if template matches
-html = html.replace(
-'''          <div class="film">
-            
-            <h3>Waktu Menonton</h3>''',
-'''          <div class="film">
-            <h3>Kenapa Naruto?</h3>'''
-)
-html = html.replace(
-'''            <p class="muted">Paling nyaman menonton saat santai, sambil menikmati camilan kesukaan.</p>''',
-'''            <p class="muted">Ceritanya seru dan mengajarkan kita untuk tidak mudah menyerah.</p>'''
-)
+    <h2>Data Diri</h2>
+<img src="poto/08.jpeg" alt="poto/08.jpeg" height="10%" width="10%">
+    <p>Nama: Nurul Fadhilah</p>
+    <p> Tanggal Lahir:15-06-2010  </p>
+    <p>Alamat: Lajoa</p>
+    <p>Sekolah: Smkn 3 Soppeng</p>
+    
 
-html = html.replace(
-'''          <label for="pesan">Pesan kamu</label>
-          <textarea id="pesan" placeholder="Hai Nurul, websitemu lucu banget!"></textarea>
-          <button class="btn" type="button" onclick="kirimPesan()">Kirim pesan ↗</button>''',
-'''          <label for="nama">Nama kamu</label>
-          <input id="nama" type="text" placeholder="Masukkan nama kamu"
-            style="display:block;width:100%;margin:8px 0 14px;padding:13px;border:1px solid #dfc4e8;border-radius:13px;background:rgba(255,255,255,.85);color:var(--text);font:inherit;">
-          <label for="pesan">Pesan kamu</label>
-          <textarea id="pesan" placeholder="Tulis pesan untuk Nurul..."></textarea>
-          <button class="btn" type="button" onclick="kirimPesan()">Kirim pesan ↗</button>'''
-)
+    <h2>Hobby</h2>
+    <ul>
+        <li>Memasak</li>
+        <li>Menonton</li>
+    </ul>
 
-html = html.replace(
-'''          <h2>Keep growing, <span class="gradient-text">keep shining.</span></h2>
-          <p class="muted">Terima kasih sudah berkunjung ke ruang kecilku. Jangan takut bermimpi dan terus jadi versi terbaik dirimu.</p>''',
-'''          <h2><span class="gradient-text">SEKIAN DARI SAYA</span></h2>
-          <p class="muted" style="font-weight:800;line-height:2;">
-            BUKAN DJ TAPI BREAKBEAT<br>
-            BUKAN YANG TERBAIK, TAPI SIAP JADI LEBIH BAIK!<br>
-            THANKS FOR VISITING ✌🏻
-          </p>'''
-)
+    <h2>Cita-Cita</h2>
+    <p>BOS MUDA</p>
 
-html = html.replace(
-'''      const pesan = document.getElementById('pesan').value.trim();
-      if (!pesan) {
-        alert('Tulis pesan dulu ya 😊');
-        return;
-      }
-      const teks = encodeURIComponent('Pesan untuk Nurul dari buku tamu:\\n' + pesan);''',
-'''      const nama = document.getElementById('nama').value.trim();
-      const pesan = document.getElementById('pesan').value.trim();
-      if (!nama || !pesan) {
-        alert('Isi nama dan pesan terlebih dahulu ya.');
-        return;
-      }
-      const teks = encodeURIComponent('Pesan untuk Nurul dari buku tamu.\\nNama: ' + nama + '\\nPesan: ' + pesan);'''
-)
-
-p.write_text(html, encoding="utf-8")
-print("File diperbarui: link Naruto, kolom nama buku tamu, dan penutup sesuai permintaan.")
+</body>
+</html>
