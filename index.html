@@ -411,7 +411,7 @@
         <img src="08.jpeg" alt="Foto saya" width="150">
       </div>
       <div class="profile-title">
-        <h1>HAII SEMUANYAAA!!!!</h1>
+        <h1>Nurul Fadhilah</h1>
       </div>
       <div class="bio-list">
         <div class="bio-item"><span class="bio-label">Nama :</span> Nurul Fadhilah</div>
@@ -468,68 +468,44 @@
         BUKAN YANG TERBAIK, TAPI SIAP JADI LEBIH BAIK!<br>
         THANKS FOR VISITING ✌🏻
       </p>
-      <div class="click-hint">✨ Klik di sini untuk SELEBRASI!!! ✨</div>
+      <div class="click-hint">✨ Klik di sini untuk kembang api ✨</div>
     </div>
 
   </div>
 
   <script>
-  //   const SCRIPT_URL = ;
-https://script.google.com/macros/s/AKfycbxtqjt5KhPwfR8u7k2pOAztWRsn3Sgj5gP7IywxuyFV7xdaE4jL8wuUO-01uE8QCk1E2A/exec
-  const form = document.getElementById('guestbookForm');
-  const list = document.getElementById('guestbookList');
-  const btnSubmit = form.querySelector('.btn-submit');
+    // --- BUKU TAMU SCRIPT ---
+    const form = document.getElementById('guestbookForm');
+    const list = document.getElementById('guestbookList');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const nama = document.getElementById('nama').value.trim();
-    const pesan = document.getElementById('pesan').value.trim();
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const nama = document.getElementById('nama').value.trim();
+      const pesan = document.getElementById('pesan').value.trim();
 
-    if (!nama || !pesan) {
-      alert('Isi nama dan pesan terlebih dahulu ya.');
-      return;
-    }
-
-    btnSubmit.disabled = true;
-    btnSubmit.innerText = 'Mengirim...';
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ nama: nama, pesan: pesan })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.result === 'success') {
-        const item = document.createElement('div');
-        item.className = 'guestbook-item';
-        item.innerHTML = `
-          <div class="name">${escapeHtml(nama)}</div>
-          <div class="message">${escapeHtml(pesan)}</div>
-        `;
-        list.prepend(item);
-
-        form.reset();
-        alert('Pesan kamu berhasil dikirim dan tersimpan di Google Sheets!');
-      } else {
-        alert('Gagal mengirim pesan.');
+      if (!nama || !pesan) {
+        alert('Isi nama dan pesan terlebih dahulu ya.');
+        return;
       }
-    })
-    .catch(error => {
-      alert('Terjadi kesalahan saat mengirim pesan.');
-    })
-    .finally(() => {
-      btnSubmit.disabled = false;
-      btnSubmit.innerText = 'Kirim Pesan ↗';
-    });
-  });
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.innerText = text;
-    return div.innerHTML;
-  }
-</script>
+      const item = document.createElement('div');
+      item.className = 'guestbook-item';
+      item.innerHTML = `
+        <div class="name">${escapeHtml(nama)}</div>
+        <div class="message">${escapeHtml(pesan)}</div>
+      `;
+
+      list.prepend(item);
+      form.reset();
+      alert('Terima kasih sudah mengisi buku tamu!');
+    });
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.innerText = text;
+      return div.innerHTML;
+    }
 
     // --- ANIMASI KEMBANG API SCRIPT ---
     const canvas = document.getElementById('fireworksCanvas');
