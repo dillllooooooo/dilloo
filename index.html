@@ -1,29 +1,428 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="id" class="scroll-smooth">
 <head>
-    <title>Biodata Saya</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Kecil Nurul | Personal Web</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti for Fireworks/Hearts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Custom CSS Animations & Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#fbcfe8',
+                            DEFAULT: '#ec4899',
+                            dark: '#831843',
+                            purple: '#a855f7',
+                            deepPurple: '#3b0764'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 15px rgba(236, 72, 153, 0.4), 0 0 30px rgba(168, 85, 247, 0.2)' },
+                            '100%': { boxShadow: '0 0 25px rgba(236, 72, 153, 0.8), 0 0 50px rgba(168, 85, 247, 0.5)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f0c1b 0%, #1a102f 40%, #2a082e 80%, #17072b 100%);
+            color: #f3e8ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(236, 72, 153, 0.4);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px -10px rgba(236, 72, 153, 0.3);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #f472b6 0%, #c084fc 50%, #e879f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0c1b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #831843;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ec4899;
+        }
+    </style>
 </head>
-<body>
+<body class="relative">
 
-    <h1>BIODATA DIRI</h1>
+    <!-- Ambient Glowing Background Bubbles -->
+    <div class="fixed top-20 left-10 w-72 h-72 bg-pink-600/20 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
+    <div class="fixed bottom-20 right-10 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
 
-    <h2>Data Diri</h2>
-<img src="08.jpeg" alt="Foto Nurul" width="200">
-    <p>Nama: Nurul Fadhilah</p>
-    <p> Tanggal Lahir:15-06-2010  </p>
-    <p>Alamat: Lajoa</p>
-    <p>Sekolah: Smkn 3 Soppeng</p>
-    
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-card border-b border-white/10 px-6 py-4">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-extrabold text-xl tracking-wider gradient-text flex items-center gap-2">
+                <i class="fa-solid fa-sparkles"></i> NURUL.SPACE
+            </a>
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <a href="#profil" class="hover:text-pink-400 transition-colors">Profil</a>
+                <a href="#film" class="hover:text-pink-400 transition-colors">Film</a>
+                <a href="#buku-tamu" class="hover:text-pink-400 transition-colors">Buku Tamu</a>
+                <a href="#penutup" class="hover:text-pink-400 transition-colors">Penutup</a>
+            </div>
+        </div>
+    </nav>
 
-    <h2>Hobby</h2>
-    <ul>
-        <li>Memasak</li>
-        <li>Menonton</li>
-    </ul>
+    <main class="max-w-4xl mx-auto px-4 py-12 space-y-24">
 
-    <h2>Cita-Cita</h2>
-    <p>BOS MUDA</p>
+        <!-- 1. SECTION PROFIL -->
+        <section id="profil" class="text-center pt-8">
+            <div class="relative inline-block mb-6">
+                <!-- Outer Glowing Aura -->
+                <div class="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 blur-lg opacity-70 animate-glow"></div>
+                <!-- Avatar Image -->
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" 
+                     alt="Foto Profil Nurul" 
+                     class="relative w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-pink-400/50 shadow-2xl animate-float">
+                <span class="absolute bottom-2 right-2 bg-emerald-500 text-white text-xs px-2.5 py-1 rounded-full border-2 border-purple-950 flex items-center gap-1 font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-white animate-ping"></span> Online
+                </span>
+            </div>
 
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-pink-300 text-sm font-medium border border-pink-500/30 mb-2">
+                    <i class="fa-solid fa-heart text-xs text-pink-400"></i> Welcome to My Cute Corner
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
+                    Hai, Saya <span class="gradient-text">Nurul</span> ✨
+                </h1>
+                <p class="text-purple-200/80 max-w-xl mx-auto text-base md:text-lg leading-relaxed">
+                    Penikmat narasi, pencinta desain estetis, dan pemburu tontonan seru di kala senggang. Mari berteman dan saling berbagi inspirasi!
+                </p>
+
+                <!-- Social Media Links -->
+                <div class="flex justify-center items-center gap-4 pt-4">
+                    <a href="#" class="w-11 h-11 rounded-full glass-card flex items-center justify-center text-pink-300 hover:text-white hover:bg-pink-600/50 transition-all duration-300 transform hover:scale-110">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-full glass-card flex items-center justify-center text-pink-300 hover:text-white hover:bg-purple-600/50 transition-all duration-300 transform hover:scale-110">
+                        <i class="fa-brands fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-full glass-card flex items-center justify-center text-pink-300 hover:text-white hover:bg-pink-600/50 transition-all duration-300 transform hover:scale-110">
+                        <i class="fa-brands fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-full glass-card flex items-center justify-center text-pink-300 hover:text-white hover:bg-purple-600/50 transition-all duration-300 transform hover:scale-110">
+                        <i class="fa-brands fa-spotify text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SECTION FILM & HOBI -->
+        <section id="film" class="space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold gradient-text flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-film text-pink-400"></i> Film & Anime Favorit
+                </h2>
+                <p class="text-purple-200/60 text-sm">Tontonan yang memberikan energi positif dan inspirasi.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Film Card 1 (Naruto) -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=600" 
+                                 alt="Naruto Shippuden" 
+                                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-pink-500/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                Anime Series
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-white">Naruto Shippuden</h3>
+                                <span class="text-xs text-yellow-400 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-star"></i> 9.8
+                                </span>
+                            </div>
+                            <p class="text-purple-200/70 text-sm leading-relaxed">
+                                Kisah perjuangan, persahabatan tak tergoyahkan, serta pantang menyerah dalam menggapai impian menjadi seorang Hokage.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2">
+                        <a href="https://www.crunchyroll.com/series/GY9PJ5KWR/naruto" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-pink-600/30 hover:bg-pink-600/60 border border-pink-500/40 text-pink-200 hover:text-white font-medium text-sm transition-all duration-300">
+                            Tonton Naruto <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Film Card 2 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&q=80&w=600" 
+                                 alt="Your Name" 
+                                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-purple-500/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                Anime Movie
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-white">Kimi no Na wa (Your Name)</h3>
+                                <span class="text-xs text-yellow-400 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-star"></i> 9.6
+                                </span>
+                            </div>
+                            <p class="text-purple-200/70 text-sm leading-relaxed">
+                                Petualangan emosional tentang dua takdir anak muda yang terhubung secara ajaib melompati ruang dan waktu.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2">
+                        <a href="https://www.netflix.com" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/60 border border-purple-500/40 text-purple-200 hover:text-white font-medium text-sm transition-all duration-300">
+                            Tonton Movie <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SECTION BUKU TAMU -->
+        <section id="buku-tamu" class="space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-bold gradient-text flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-book-open text-pink-400"></i> Buku Tamu
+                </h2>
+                <p class="text-purple-200/60 text-sm">Tinggalkan jejak berupa salam manis atau pesan hangatmu di sini!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                <!-- Form Input -->
+                <div class="md:col-span-5 glass-card p-6 rounded-2xl border border-pink-500/20 space-y-4">
+                    <h3 class="text-lg font-semibold text-pink-200 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-nib text-pink-400"></i> Kirim Pesan
+                    </h3>
+                    <form id="guestbookForm" onsubmit="tambahPesan(event)" class="space-y-4">
+                        <div>
+                            <label for="nama" class="block text-xs font-medium text-purple-200/80 mb-1">Nama Kamu</label>
+                            <input type="text" id="nama" required placeholder="Siapa namamu?" 
+                                   class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-purple-300/40 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all text-sm">
+                        </div>
+                        <div>
+                            <label for="pesan" class="block text-xs font-medium text-purple-200/80 mb-1">Pesan / Kesan</label>
+                            <textarea id="pesan" required rows="3" placeholder="Tuliskan pesan manis untuk Nurul..." 
+                                      class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-purple-300/40 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit" 
+                                class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold text-sm shadow-lg shadow-pink-500/25 transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pesan ↗
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Live Message List -->
+                <div class="md:col-span-7 space-y-3">
+                    <h3 class="text-lg font-semibold text-pink-200 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-comments text-pink-400"></i> Pesan Terkini
+                    </h3>
+                    <div id="daftarPesan" class="space-y-3 max-h-[380px] overflow-y-auto pr-2">
+                        <!-- Default Initial Messages -->
+                        <div class="glass-card p-4 rounded-xl space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sm text-pink-300">Kanza S.</span>
+                                <span class="text-[10px] text-purple-300/50">Baru saja</span>
+                            </div>
+                            <p class="text-xs text-purple-100/80">Websitemu estetik banget! Warnanya bikin adem. Semangat terus ya Nurul! ✨</p>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sm text-purple-300">Rian</span>
+                                <span class="text-[10px] text-purple-300/50">1 jam lalu</span>
+                            </div>
+                            <p class="text-xs text-purple-100/80">Salam kenal dari sesama pecinta Naruto! Datebayo! 🌀</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SECTION PENUTUP -->
+        <section id="penutup" class="text-center pt-8 pb-12">
+            <div id="interactiveClosing" 
+                 onclick="triggerFireworks()" 
+                 class="glass-card glass-card-hover p-8 md:p-10 rounded-3xl border border-pink-500/30 cursor-pointer space-y-6 relative overflow-hidden group">
+                
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl group-hover:bg-pink-500/40 transition-all"></div>
+                
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-wider gradient-text">
+                    SEKIAN DARI SAYA
+                </h2>
+                
+                <div class="space-y-2 text-pink-100/90 font-bold text-sm md:text-base tracking-wide max-w-xl mx-auto leading-relaxed">
+                    <p class="text-pink-300">BUKAN DJ TAPI BREAKBEAT 🎶</p>
+                    <p class="text-purple-300">BUKAN YANG TERBAIK, TAPI SIAP JADI LEBIH BAIK! 🔥</p>
+                    <p class="text-pink-400 text-lg md:text-xl pt-2">THANKS FOR VISITING ✌🏻</p>
+                </div>
+
+                <div class="pt-4">
+                    <span class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Klik di sini untuk selebrasi! ✨
+                    </span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 border-t border-white/10 text-xs text-purple-300/50">
+        <p>&copy; 2026 Nurul. Space created with 💖 and smooth vibes.</p>
+    </footer>
+
+    <!-- JavaScript Interaktif -->
+    <script>
+        // Fungsi Penambahan Pesan Buku Tamu secara Dinamis
+        function tambahPesan(event) {
+            event.preventDefault();
+
+            const namaInput = document.getElementById('nama');
+            const pesanInput = document.getElementById('pesan');
+            const daftarPesan = document.getElementById('daftarPesan');
+
+            const nama = namaInput.value.trim();
+            const pesan = pesanInput.value.trim();
+
+            if (!nama || !pesan) return;
+
+            // Buat Elemen Kartu Pesan Baru
+            const pesanBaru = document.createElement('div');
+            pesanBaru.className = 'glass-card p-4 rounded-xl space-y-1 transform transition-all duration-500 translate-y-4 opacity-0 border-l-4 border-pink-500';
+            
+            pesanBaru.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-pink-300">${escapeHtml(nama)}</span>
+                    <span class="text-[10px] text-purple-300/50">Baru saja</span>
+                </div>
+                <p class="text-xs text-purple-100/80">${escapeHtml(pesan)}</p>
+            `;
+
+            // Sisipkan di Paling Atas Daftar Pesan
+            daftarPesan.insertBefore(pesanBaru, daftarPesan.firstChild);
+
+            // Efek Animasi Masuk (Fade-in & Slide-up)
+            setTimeout(() => {
+                pesanBaru.classList.remove('translate-y-4', 'opacity-0');
+            }, 50);
+
+            // Reset Form Inputs
+            namaInput.value = '';
+            pesanInput.value = '';
+
+            // Tembakkan sedikit efek kembang api mini saat berhasil mengisi
+            confetti({
+                particleCount: 25,
+                spread: 60,
+                origin: { y: 0.7 },
+                colors: ['#ec4899', '#a855f7', '#fbcfe8']
+            });
+        }
+
+        // Fungsi Keamanan untuk Mencegah XSS pada Input
+        function escapeHtml(string) {
+            const div = document.createElement('div');
+            div.innerText = string;
+            return div.innerHTML;
+        }
+
+        // Efek Selebrasi Kembang Api / Partikel Hati saat Klik Penutup
+        function triggerFireworks() {
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.7 }
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+                colors: ['#ec4899', '#f472b6']
+            });
+            fire(0.2, {
+                spread: 60,
+                colors: ['#a855f7', '#c084fc']
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                colors: ['#ffffff', '#fbcfe8']
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+        }
+    </script>
 </body>
 </html>
+```
