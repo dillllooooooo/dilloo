@@ -88,7 +88,40 @@
 
       <div class="guestbook-list" id="guestbookList"></div>
     </div>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbynCl5QUOaJTfgQMRtRq7s9eG0_Z7dWitgtOYazY35mI1v1KDIyhByGMsqqdUEaQD92/exec';
+    const form = document.getElementById('guestbookForm');
+    const submitBtn = document.getElementById('submitBtn');
 
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Mengirim...';
+      }
+
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          alert('Permintaan pengiriman telah dilakukan. Periksa Google Sheets untuk memastikan data tersimpan.');
+          form.reset();
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Kirim Pesan ↗';
+          }
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          alert('Terjadi kesalahan saat mengirim pesan.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Kirim Pesan ↗';
+          }
+        });
+    });
+  </script>
+</body>
+</html>
     <div id="penutup" class="card footer">
       <h2>SEKIAN DARI SAYA</h2>
 
